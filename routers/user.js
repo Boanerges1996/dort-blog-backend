@@ -8,8 +8,7 @@ router.post("/login",controller.login)
 router.get("/verification/:token",controller.verifyEmail)
 // router.post("/email/verify/:id")
 
-// router.get("/user/info",AUTH)
-
-// router.put("/user/info",AUTH)
+router.get("/info/:id",AUTH,controller.getUserInfo)
+router.put("/info/:id",AUTH,controller.updateUser)
 
 module.exports = router

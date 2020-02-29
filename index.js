@@ -6,6 +6,8 @@ const dotenv = require('dotenv')
 
 //Routes import
 const User = require("./routers/user")
+const Blog = require("./routers/blog")
+const Comment = require("./routers/comment")
 
 const app = express()
 
@@ -41,6 +43,8 @@ app.use(express.static(__dirname+'/static'))
 
 // Routers
 app.use("/user",User)
+app.use("/user",Blog)
+app.use("/user",Comment)
 
 
 

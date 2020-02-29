@@ -70,8 +70,7 @@ registerUser = async (req,res)=>{
             console.log(err)
             res.status(400).send(err)
         }
-    }
-    
+    } 
 }
 
 
@@ -132,9 +131,87 @@ login = async(req,res)=>{
     } 
 }
 
+// Update user info
+updateUser = async(req,res)=>{
+    if(Object.entries(req.body).length === 0 && req.body.constructor === Object){
+        res.send({message:"Please provide a body"})
+    }
+    else{
+        const id = req.params.id
+        try{
+            await Users.updateOne({_id:id},{$set:req.body})
+            const updatedUser = await Users.findOne({_id:id})
+            res.send(updatedUser)            
+        }
+        catch(err){
+            res.send(err)
+        }
+    }
+}
+
+
+// Getting users info
+getUserInfo = async (req,res)=>{
+    if(Object.entries(req.body).length === 0 && req.body.constructor === Object){
+        res.send({message:"Please provide a body"})
+    }
+    else{
+        const id = req.params.id
+        try{
+            let userInfo = await Users.findOne({_id:id},{avatar:1,email:1,firstname:1,lastname:1})
+            res.send(userInfo)
+        }
+        catch(err){
+            res.send({...err,messages:"User doesnt exist"})
+        }
+    } 
+}
+
+
+// Forgotten password
+forgottenPassword = async(req,res)=>{
+    if(Object.entries(req.body).length === 0 && req.body.constructor === Object){
+        res.send({message:"Please provide a body"})
+    }
+    else{
+        try{
+            const checkIfExist = await Users.findOne({
+                email:email
+            })
+            if(checkIfExist){
+                let tok = crypto.randomBytes(16).toString("hex")
+                let token = new Token({user_id:checkIfExist._id,token:tok})
+                const url = `http://localhost:5000/user/password/reset/${token}`
+                const mailOptions = {
+                    from: 'boanergeskwaku253@gmail.com', // sender address
+                    to: req.body.email, // list of receivers
+                    subject: 'Blog Verify Email', // Subject line
+                    html: `Hello<br /> Please click on the link to reset Password <a href=${url}>Click here</a>`
+                };
+                await transporter.sendMail(mailOptions, function (err, info) {
+                    if(err)
+                      console.log(err)
+                    else
+                      console.log(info);
+                });
+                res.status(200).send({exists:true})
+            }
+            else{
+                res.status(400).send({exists:false,message:"Account doesnt exist you can't reset"})
+            }
+        }
+        catch(err){
+            res.status(400).send(err)
+        }    
+    }
+}
+
+
 module.exports = {
     registerUser,
     login,
-    verifyEmail
+    verifyEmail,
+    updateUser,
+    getUserInfo
 }
 

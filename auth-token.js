@@ -23,3 +23,5 @@ AUTH=(req,res,next)=>{
         res.status(401).send({message:"Access denied. Token required"})
     }
 }
+
+module.exports = AUTH

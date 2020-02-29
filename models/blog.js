@@ -13,10 +13,14 @@ const Blog = new mongoose.Schema({
     content:{
         type:String
     },
-    type:{
+    category:{
         type:String,
         enum:["science","fashion","engineering","art","politics","religion"]
     },
+    date:{
+        type:Date,
+        default:Date.now()
+    }
 })
 
 module.exports = mongoose.model("blog",Blog)
