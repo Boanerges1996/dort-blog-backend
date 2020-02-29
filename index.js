@@ -5,6 +5,7 @@ const cors = require("cors")
 const dotenv = require('dotenv')
 
 //Routes import
+const User = require("./routers/user")
 
 const app = express()
 
@@ -24,7 +25,7 @@ if(process.env.ENVIRON==="production"){
 }
 else{
     // Local Database
-    mongoose.connect('mongodb://localhost/vgs-db',
+    mongoose.connect('mongodb://localhost/blog',
     {useNewUrlParser: true,useUnifiedTopology:true}).then(()=>{
         console.log("Development local DB connected")
     })
@@ -35,9 +36,11 @@ else{
 app.use(cors())
 app.use(express.json())
 app.use(logger("dev"))
+app.use(express.static(__dirname+'/static'))
 
 
 // Routers
+app.use("/user",User)
 
 
 

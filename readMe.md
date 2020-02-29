@@ -1,6 +1,8 @@
-const mongoose = require("mongoose")
-
-const User = new mongoose.Schema({
+# *Dort Blog*
+## *User Routes*
+* /user/signup
+```
+{
     firstname:{type:String},
     lastname:{type:String},
     email:{type:String},
@@ -17,6 +19,14 @@ const User = new mongoose.Schema({
         type:String,
         default:Date.now()
     }
-})
-
-module.exports = mongoose.model("user",User)
+}
+```
+* /user/login
+```
+{
+    email:"Any",
+    password:"Any"
+}
+```
+## *Email Verification*
+* /user/verification/:token
