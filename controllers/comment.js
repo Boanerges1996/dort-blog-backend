@@ -5,9 +5,15 @@ const Comment = require("../models/comment")
 writeAComment = async(req,res)=>{
     const id = req.params.id
     try{
-        let verifyId = await User.find({_id:id})
+        let verifyId = await User.findOne({_id:id})
         if(verifyId){
-            const com = new Comment({...req.body})
+            const com = new Comment(
+                {...req.body,
+                    username:verifyId.firstname+" "+verifyId.lastname,
+                    avatar:verifyId.avatar,
+                    user_id:id
+                }
+            )
             let saved = await com.save()
             res.status(201).send(saved)
         }

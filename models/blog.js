@@ -4,6 +4,9 @@ const Blog = new mongoose.Schema({
     user_id:{
         type:String
     },
+    username:{
+        type:String
+    },
     title:{
         type:String
     },
@@ -16,6 +19,9 @@ const Blog = new mongoose.Schema({
     category:{
         type:String,
         enum:["science","fashion","engineering","art","politics","religion"]
+    },
+    avatar:{
+        type: String,
     },
     date:{
         type:Date,

@@ -7,6 +7,7 @@ router.get("/blog/all/blog/:id",AUTH,controller.getAllSpecifyUserBlog)
 router.get("/blog/all/category/:id",AUTH,controller.getMyBlogByCategory)
 router.get("/blog/all",controller.getAllBlogsInDb)
 router.get("/blog/search",controller.searchBlog)
+router.get("/blog/one/:id",controller.getOneBlogById)
 
 
 

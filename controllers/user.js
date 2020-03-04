@@ -32,7 +32,7 @@ registerUser = async (req,res)=>{
                 email:email
             })
             if(checkIfExist){
-                res.status(400).send({exists:true})
+                res.status(200).send({exists:true})
             }
             else{
                 let salt = await bcrypt.genSalt(10)
@@ -49,7 +49,7 @@ registerUser = async (req,res)=>{
                 let auth_token = jwt.sign({email:email},process.env.SECRET_KEY,{algorithm:"HS256"})
                 let token = new Token({user_id:getUser._id,token:tok})
                 await token.save();
-                const url = `http://localhost:5000/user/verification/${tok}`
+                const url = `http://127.0.0.1:5000/user/verification/${tok}`
                 const mailOptions = {
                     from: 'boanergeskwaku253@gmail.com', // sender address
                     to: req.body.email, // list of receivers
@@ -113,15 +113,16 @@ login = async(req,res)=>{
                 if(verifyPassword){
                     const getUser = await Users.findOne({email:email},{email:1,firstname:1,lastname:1,date:1,avatar:1,verified:1})
                     let auth_token = await jwt.sign({email:email},process.env.SECRET_KEY,{algorithm:"HS256"})
-                    res.status(200).set({auth_token}).send({...getUser._doc,logged:true,auth_token})
+                    res.status(200).set({auth_token}).send({...getUser._doc,logged:true,auth_token,exist:true})
                 }
                 else{
-                    res.status(400).send({logged:false,message:"Invalid email or password"})
+                    res.status(200).send({logged:false,message:"Invalid email or password",invalid:true,exists:true})
                 }
             }
             else{
-                res.status(400).send({
-                    exist:false
+                res.status(200).send({
+                    exist:false,
+                    message:"Please You dont have an account"
                 })
             }
         }

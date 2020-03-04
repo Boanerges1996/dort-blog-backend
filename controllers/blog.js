@@ -12,7 +12,9 @@ writeBlog = async(req,res)=>{
             if(verifyId){
                 let newBlog = new Blog({
                     user_id:id,
-                    ...req.body
+                    ...req.body,
+                    username: verifyId.firstname+" "+verifyId.lastname,
+                    avatar:verifyId.image
                 })
                 let savedBlog = await newBlog.save()
                 res.status(200).send(savedBlog)
@@ -89,10 +91,22 @@ searchBlog = async(req,res)=>{
     }
 }
 
+getOneBlogById = async(req,res)=>{
+    try{
+        const id = req.params.id
+        let blog = await Blog.findOne({_id:id})
+        res.status(200).send(blog)
+    }
+    catch(err){
+        res.status(400).send(err)
+    }
+}
+
 module.exports = {
     writeBlog,
     getAllSpecifyUserBlog,
     getMyBlogByCategory,
     getAllBlogsInDb,
-    searchBlog
+    searchBlog,
+    getOneBlogById
 }

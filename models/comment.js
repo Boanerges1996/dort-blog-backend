@@ -4,10 +4,16 @@ const Comment = new mongoose.Schema({
     user_id:{
         type:String
     },
+    username:{
+        type:String
+    },
     blog_id:{
         type:String
     },
     comment:{
+        type:String
+    },
+    avatar:{
         type:String
     },
     date:{
